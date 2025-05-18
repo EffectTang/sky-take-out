@@ -35,4 +35,11 @@ public class Result<T> implements Serializable {
         return result;
     }
 
+    public static <T> Result<T> isOk(String msg) {
+        Result result = new Result();
+        result.msg = msg;
+        result.code = 0;
+        return result;
+    }
+
 }
