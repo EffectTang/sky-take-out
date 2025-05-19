@@ -3,6 +3,7 @@ package com.sky.json;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
@@ -44,6 +45,13 @@ public class JacksonObjectMapper extends ObjectMapper {
                 .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
                 .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
+
+        //simpleModule
+        //解决：如果是序列化问题导致 id 值在前后端传输过程中发生变化（如精度丢失、科学计数法等），
+        // 通常是因为后端返回的 JSON 数据中 id 字段是 Long 类型，而前端 JavaScript 无法处理大整数造成的
+
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance)
+                    .addSerializer(Long.TYPE, ToStringSerializer.instance);
 
         //注册功能模块 例如，可以添加自定义序列化器和反序列化器
         this.registerModule(simpleModule);

@@ -96,5 +96,15 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    @PostMapping("/status/{status}")
+    @ApiOperation( "启用禁用员工账号")
+    public Result<?> changeEmployeeStatus(@PathVariable("status") Integer status, Long id) {
+        if(employeeService.changeEmployeeStatus(status, id)>0){
+            return Result.isOk("启用禁用员工账号成功");
+        }else {
+            return Result.error("启用禁用员工账号失败");
+        }
+    }
+
 
 }

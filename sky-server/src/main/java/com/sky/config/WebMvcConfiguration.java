@@ -1,6 +1,8 @@
 package com.sky.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sky.interceptor.JwtTokenAdminInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +21,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * 配置类，注册web层相关组件
@@ -85,6 +85,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         //objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         converter.setObjectMapper(new JacksonObjectMapper());
+
+        //解决：如果是序列化问题导致 id 值在前后端传输过程中发生变化（如精度丢失、科学计数法等），
+        // 通常是因为后端返回的 JSON 数据中 id 字段是 Long 类型，而前端 JavaScript 无法处理大整数造成的
 
         // 将自定义的转换器添加到 converters 列表中
         // 插入到最前面，优先使用

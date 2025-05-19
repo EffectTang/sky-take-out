@@ -108,5 +108,14 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
     }
 
+    @Override
+    public int changeEmployeeStatus(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        return this.baseMapper.updateById(employee);
+    }
+
 
 }
