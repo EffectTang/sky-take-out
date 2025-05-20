@@ -106,5 +106,22 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable("id") Long id) {
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping("")
+    @ApiOperation( "修改员工信息")
+    public Result<String> update(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        int num = employeeService.updateEmployee(employee);
+
+        return num  > 0 ? Result.success(employeeDTO.getUsername()+"修改成功") : Result.error("系统异常");
+    }
+
 
 }

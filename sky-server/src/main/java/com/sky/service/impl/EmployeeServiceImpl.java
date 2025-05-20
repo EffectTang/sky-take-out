@@ -117,5 +117,18 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return this.baseMapper.updateById(employee);
     }
 
+    @Override
+    public Employee getById(Long id) {
+        return this.baseMapper.selectById(id);
+    }
+
+    @Override
+    public int updateEmployee(Employee employee) {
+
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        return this.baseMapper.updateById(employee);
+    }
+
 
 }
