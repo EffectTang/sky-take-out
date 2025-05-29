@@ -87,7 +87,7 @@ public class EmployeeController {
 
         Integer num = employeeService.insert(employee);
 
-        return num  > 0 ? Result.isOk(employeeDTO.getUsername()+"保存成功") : Result.error("系统异常");
+        return num  > 0 ? Result.isOk(employeeDTO.getUsername()+"保存成功", employeeDTO) : Result.error("系统异常");
     }
 
     @GetMapping("/page")
@@ -100,7 +100,7 @@ public class EmployeeController {
     @ApiOperation( "启用禁用员工账号")
     public Result<?> changeEmployeeStatus(@PathVariable("status") Integer status, Long id) {
         if(employeeService.changeEmployeeStatus(status, id)>0){
-            return Result.isOk("启用禁用员工账号成功");
+            return Result.isOk("启用禁用员工账号成功",id);
         }else {
             return Result.error("启用禁用员工账号失败");
         }

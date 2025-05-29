@@ -6,6 +6,8 @@
 - mybatis-plus 3.5.11
 - mysql 8.0.3
 - swagger 
+- MinIO 8.5.17
+- Redis 
 
 ### 相关技术资料
 
@@ -15,4 +17,8 @@
 
 - mybatisplus
 - https://baomidou.com/getting-started/
-- 
+
+- MinIO
+- https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-single-drive.html#create-the-systemd-service-file
+
+
