@@ -1,6 +1,10 @@
 package com.sky.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.vo.DishVO;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  * @author starlord
@@ -15,4 +19,6 @@ public interface DishService {
      * @param dishDTO
      */
     public void saveWithFlavor(DishDTO dishDTO);
+
+    Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 }

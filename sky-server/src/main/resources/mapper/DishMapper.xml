@@ -10,4 +10,21 @@
         WHERE category_id = #{categoryId}
     </select>
 
+    <select id="pageQuery" resultType="com.sky.vo.DishVO">
+        select d.* , c.name as categoryName from dish d left join category c on d.category_id = c.id
+        <where>
+
+            <if test="dishPageQueryDTO.name != null and dishPageQueryDTO.name != ''">
+                AND d.name LIKE CONCAT('%', #{dishPageQueryDTO.name}, '%')
+            </if>
+            <if test="dishPageQueryDTO.categoryId != null ">
+                and d.category_id = #{dishPageQueryDTO.categoryId}
+            </if>
+            <if test="dishPageQueryDTO.status != null">
+                and d.status = #{dishPageQueryDTO.status}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
+
 </mapper>

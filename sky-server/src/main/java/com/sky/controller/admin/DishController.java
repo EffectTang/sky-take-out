@@ -4,18 +4,18 @@ package com.sky.controller.admin;/**
  * @create 2025/6/2
  */
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author starlord
@@ -43,5 +43,13 @@ public class DishController {
         log.info("新增菜品：{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);//后绪步骤开发
         return Result.success();
+    }
+
+    @GetMapping("/page")
+    @ApiOperation("菜品分页查询")
+    public Result<Page<DishVO>> page(DishPageQueryDTO dishPageQueryDTO) {
+        log.info("菜品分页查询:{}", dishPageQueryDTO);
+        Page<DishVO> pageResult = dishService.pageQuery(dishPageQueryDTO);//后绪步骤定义
+        return Result.success(pageResult);
     }
 }
