@@ -6,6 +6,8 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.vo.DishVO;
 import org.apache.poi.ss.formula.functions.T;
 
+import java.util.List;
+
 /**
  * @author starlord
  * @description
@@ -21,4 +23,12 @@ public interface DishService {
     public void saveWithFlavor(DishDTO dishDTO);
 
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    void deleteBatch(List<Long> ids);
+
+    DishVO getByIdWithFlavor(Long id);
+
+    void updateWithFlavor(DishDTO dishDTO);
+
+    void startOrStop(Integer status, Long id);
 }

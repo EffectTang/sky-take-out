@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author starlord
  * @description
@@ -51,5 +53,47 @@ public class DishController {
         log.info("菜品分页查询:{}", dishPageQueryDTO);
         Page<DishVO> pageResult = dishService.pageQuery(dishPageQueryDTO);//后绪步骤定义
         return Result.success(pageResult);
+    }
+
+    /**
+     * 菜品批量删除
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("菜品批量删除")
+    public Result<?> delete(@RequestParam List<Long> ids) {
+        log.info("菜品批量删除：{}", ids);
+        dishService.deleteBatch(ids);//后绪步骤实现
+        return Result.success(ids.toString()+"删除成功");
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询菜品")
+    public Result<DishVO> getById(@PathVariable Long id) {
+        log.info("根据id查询菜品：{}", id);
+        DishVO dishVO = dishService.getByIdWithFlavor(id);//后绪步骤实现
+        return Result.success(dishVO);
+    }
+
+    /**
+     * 修改菜品
+     * @param dishDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result<?> update(@RequestBody DishDTO dishDTO) {
+        log.info("修改菜品：{}", dishDTO);
+        dishService.updateWithFlavor(dishDTO);
+        return Result.success();
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("菜品起售停售")
+    public Result<?> startOrStop(@PathVariable Integer status, Long id) {
+        log.info("菜品起售停售：{}", status, id);
+        dishService.startOrStop(status, id);
+        return Result.success(id+"起售停售成功");
     }
 }
