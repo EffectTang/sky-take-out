@@ -84,7 +84,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         }
     }
 
-    @Transactional
+
     @Override
     public Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         Page<DishVO> page = new Page<>(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
@@ -92,6 +92,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         return this.baseMapper.pageQuery(dishPageQueryDTO,page);
     }
 
+    @Transactional
     @Override
     public void deleteBatch(List<Long> ids) {
         //判断当前菜品是否能够删除---是否存在起售中的菜品？？
@@ -178,5 +179,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         dish.setUpdateUser(BaseContext.getCurrentId());
         this.updateById(dish);
 
+    }
+
+    @Override
+    public List<Dish> listByCategoryId(Long id) {
+        QueryWrapper<Dish> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category_id", id).eq("status", StatusConstant.ENABLE);
+        return this.list(queryWrapper);
     }
 }

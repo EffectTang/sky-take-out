@@ -3,6 +3,7 @@ package com.sky.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.vo.DishVO;
 import org.apache.poi.ss.formula.functions.T;
 
@@ -31,4 +32,6 @@ public interface DishService {
     void updateWithFlavor(DishDTO dishDTO);
 
     void startOrStop(Integer status, Long id);
+
+    List<Dish> listByCategoryId(Long id);
 }

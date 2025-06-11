@@ -7,6 +7,7 @@ package com.sky.controller.admin;/**
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -74,6 +75,14 @@ public class DishController {
         log.info("根据id查询菜品：{}", id);
         DishVO dishVO = dishService.getByIdWithFlavor(id);//后绪步骤实现
         return Result.success(dishVO);
+    }
+
+    @GetMapping("list")
+    @ApiOperation("根据categoryId查询菜品List")
+    public Result<?> getByCategoryId(@RequestParam Long categoryId) {
+        log.info("根据categoryId查询菜品List：{}", categoryId);
+        List<Dish> dishList = dishService.listByCategoryId(categoryId);
+        return Result.success(dishList);
     }
 
     /**
