@@ -1,6 +1,7 @@
 package com.sky.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.vo.SetmealVO;
@@ -14,4 +15,6 @@ import java.util.List;
  */
 public interface SetMealService {
     Page<Setmeal> queryPage(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    boolean save(SetmealDTO setmealDTO);
 }
