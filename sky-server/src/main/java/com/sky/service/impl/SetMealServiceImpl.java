@@ -75,5 +75,10 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
 
     }
 
-
+    @Override
+    public boolean startOrStop(Integer status, Long id) {
+        Setmeal setmeal = this.getById(id);
+        setmeal.setStatus(status);
+        return this.updateById(setmeal);
+    }
 }

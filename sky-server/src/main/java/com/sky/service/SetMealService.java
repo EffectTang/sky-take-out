@@ -17,4 +17,6 @@ public interface SetMealService {
     Page<Setmeal> queryPage(SetmealPageQueryDTO setmealPageQueryDTO);
 
     boolean save(SetmealDTO setmealDTO);
+
+    boolean startOrStop(Integer status, Long id);
 }

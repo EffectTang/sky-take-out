@@ -47,5 +47,13 @@ public class SetMealController {
         return Result.success("新增成功");
     }
 
+    // /admin/setmeal/status/1  status/1?id=1
+    @PostMapping("/status/{status}")
+    public Result<?> startOrStop(@PathVariable Integer status, Long id) {
+        log.info("起售或停售套餐");
+        boolean falg = setMealService.startOrStop(status, id);
+        return falg ? Result.success("起售或停售成功") : Result.error("起售或停售失败");
+    }
+
 
 }
