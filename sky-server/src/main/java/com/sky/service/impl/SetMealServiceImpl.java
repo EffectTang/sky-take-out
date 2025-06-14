@@ -81,4 +81,15 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         setmeal.setStatus(status);
         return this.updateById(setmeal);
     }
+
+    @Override
+    public SetmealVO getInfoById(Long id) {
+        Setmeal setmeal = this.getById(id);
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal, setmealVO);
+        QueryWrapper<SetmealDish> queryWrapper = new QueryWrapper<>();
+        List<SetmealDish> setmealDishes = setmealDishMapper.selectList(queryWrapper);
+        setmealVO.setSetmealDishes(setmealDishes);
+        return setmealVO;
+    }
 }

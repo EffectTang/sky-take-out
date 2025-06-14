@@ -49,10 +49,17 @@ public class SetMealController {
 
     // /admin/setmeal/status/1  status/1?id=1
     @PostMapping("/status/{status}")
-    public Result<?> startOrStop(@PathVariable Integer status, Long id) {
+    public Result<?> startOrStop(@PathVariable Integer status,@RequestParam Long id) {
         log.info("起售或停售套餐");
         boolean falg = setMealService.startOrStop(status, id);
         return falg ? Result.success("起售或停售成功") : Result.error("起售或停售失败");
+    }
+
+    @GetMapping("/{id}")
+    public Result<SetmealVO> getById(@PathVariable Long id) {
+        log.info("根据id查询套餐");
+        SetmealVO setmealVO = setMealService.getInfoById(id);
+        return Result.success(setmealVO);
     }
 
 

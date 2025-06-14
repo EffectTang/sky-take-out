@@ -19,4 +19,6 @@ public interface SetMealService {
     boolean save(SetmealDTO setmealDTO);
 
     boolean startOrStop(Integer status, Long id);
+
+    SetmealVO getInfoById(Long id);
 }
