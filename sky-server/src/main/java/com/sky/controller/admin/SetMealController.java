@@ -35,8 +35,7 @@ public class SetMealController {
     @GetMapping("/page")
     public Result<?> page(SetmealPageQueryDTO setmealPageQueryDTO) {
         log.info("套餐分页查询");
-        Page<Setmeal> setmeals = setMealService.queryPage(setmealPageQueryDTO);
-
+        Page<SetmealVO> setmeals = setMealService.queryPage(setmealPageQueryDTO);
         return Result.success(setmeals);
     }
 
@@ -60,6 +59,14 @@ public class SetMealController {
         log.info("根据id查询套餐");
         SetmealVO setmealVO = setMealService.getInfoById(id);
         return Result.success(setmealVO);
+    }
+
+    @PutMapping
+    public Result<?> update(@RequestBody SetmealDTO setmealDTO) {
+        log.info("修改套餐");
+        //return null;
+        boolean falg = setMealService.update(setmealDTO);
+        return falg ? Result.success("起售或停售成功") : Result.error("起售或停售失败");
     }
 
 

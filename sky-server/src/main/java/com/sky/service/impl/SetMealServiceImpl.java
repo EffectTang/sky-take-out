@@ -28,6 +28,8 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author starlord
@@ -42,16 +44,12 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     private SetmealDishMapper setmealDishMapper;
 
     @Override
-    public Page<Setmeal> queryPage(SetmealPageQueryDTO setmealPageQueryDTO) {
+    public Page<SetmealVO> queryPage(SetmealPageQueryDTO setmealPageQueryDTO) {
 
-        QueryWrapper<Setmeal> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like(!StringUtils.isEmpty(setmealPageQueryDTO.getName()), "name", setmealPageQueryDTO.getName())
-                .eq(!StringUtils.isEmpty(setmealPageQueryDTO.getCategoryId()), "category_id", setmealPageQueryDTO.getCategoryId())
-                .eq(!StringUtils.isEmpty(setmealPageQueryDTO.getStatus()), "status", setmealPageQueryDTO.getStatus());
         Page<Setmeal> page = new Page<>(setmealPageQueryDTO.getPage(), setmealPageQueryDTO.getPageSize());
-        Page<Setmeal> setmealPage = this.baseMapper.selectPage(page, queryWrapper);
 
-        return setmealPage;
+        return this.baseMapper.selectPageSetmealVo(page,setmealPageQueryDTO);
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -88,8 +86,35 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         SetmealVO setmealVO = new SetmealVO();
         BeanUtils.copyProperties(setmeal, setmealVO);
         QueryWrapper<SetmealDish> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("setmeal_id", id);
         List<SetmealDish> setmealDishes = setmealDishMapper.selectList(queryWrapper);
         setmealVO.setSetmealDishes(setmealDishes);
         return setmealVO;
+    }
+
+    @Transactional
+    @Override
+    public boolean update(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+        setmeal.setUpdateTime(LocalDateTime.now());
+        setmeal.setUpdateUser(BaseContext.getCurrentId());
+        boolean falg = this.updateById(setmeal);
+        Long setmealId = setmeal.getId();
+        //List<Long> dishIds = setmealDTO.getSetmealDishes().stream()
+        //            .map(SetmealDish::getDishId).collect(Collectors.toList());
+        if(falg){
+            QueryWrapper<SetmealDish> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("setmeal_id", setmealId);
+            int delete = setmealDishMapper.delete(queryWrapper);
+            if(delete>0){
+                List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+                setmealDishes.forEach(setmealDish -> {
+                    setmealDish.setSetmealId(setmealId);
+                });
+                setmealDishMapper.insert(setmealDishes);
+            }
+        }
+        return falg;
     }
 }

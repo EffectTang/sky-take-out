@@ -7,6 +7,21 @@
         SELECT COUNT(id) FROM setmeal WHERE category_id = #{id}
     </select>
 
+    <select id="selectPageSetmealVo" resultType="com.sky.vo.SetmealVO">
+        select a.*,b.name as categoryName from setmeal a left join category b on a.category_id = b.id
+        <where >
+            <if test="queryDTO.name != null and queryDTO.name != ''">
+                a.name like '%${queryDTO.name}%'
+            </if>
+            <if test="queryDTO.categoryId != null">
+                and a.category_id = #{queryDTO.categoryId}
+            </if>
+            <if test="queryDTO.status != null">
+                and a.status = #{queryDTO.status}
+            </if>
+        </where>
+        order by a.update_time desc
+    </select>
 
 
 </mapper>

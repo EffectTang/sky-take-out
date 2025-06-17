@@ -14,11 +14,13 @@ import java.util.List;
  * @create 2025/6/11
  */
 public interface SetMealService {
-    Page<Setmeal> queryPage(SetmealPageQueryDTO setmealPageQueryDTO);
+    Page<SetmealVO> queryPage(SetmealPageQueryDTO setmealPageQueryDTO);
 
     boolean save(SetmealDTO setmealDTO);
 
     boolean startOrStop(Integer status, Long id);
 
     SetmealVO getInfoById(Long id);
+
+    boolean update(SetmealDTO setmealDTO);
 }
