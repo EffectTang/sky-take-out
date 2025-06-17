@@ -23,4 +23,6 @@ public interface SetMealService {
     SetmealVO getInfoById(Long id);
 
     boolean update(SetmealDTO setmealDTO);
+
+    boolean deleteByIds(List<Long> ids);
 }

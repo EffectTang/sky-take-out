@@ -117,4 +117,15 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         }
         return falg;
     }
+
+    @Transactional
+    @Override
+    public boolean deleteByIds(List<Long> ids) {
+        boolean falg = false;
+        falg = this.removeByIds(ids);
+        if (falg){
+            this.setmealDishMapper.deleteBatchBySetmealId(ids);
+        }
+        return falg;
+    }
 }

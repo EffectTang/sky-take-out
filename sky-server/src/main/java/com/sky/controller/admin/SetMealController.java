@@ -69,5 +69,12 @@ public class SetMealController {
         return falg ? Result.success("起售或停售成功") : Result.error("起售或停售失败");
     }
 
+    @DeleteMapping
+    public Result<?> delete(@RequestParam List<Long> ids) {
+        log.info("批量删除套餐");
+        setMealService.deleteByIds(ids);
+        return Result.success("删除成功");
+    }
+
 
 }
