@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,6 @@ public interface SetmealMapper extends BaseMapper<Setmeal> {
     Integer countByCategoryId(Long id);
 
     Page<SetmealVO> selectPageSetmealVo(Page<Setmeal> page, @Param("queryDTO") SetmealPageQueryDTO queryDTO);
+
+    List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 }

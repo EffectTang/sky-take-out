@@ -17,6 +17,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.service.SetMealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.BatchResult;
@@ -128,4 +129,29 @@ public class SetMealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         }
         return falg;
     }
+
+    /**
+     * 条件查询
+     * @param setmeal
+     * @return
+     */
+    public List<Setmeal> list(Setmeal setmeal) {
+        QueryWrapper<Setmeal> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId() != null, "category_id", setmeal.getCategoryId())
+                .eq(setmeal.getStatus() != null, "status", setmeal.getStatus())
+                .like(StringUtils.hasText(setmeal.getName()), "name", setmeal.getName());
+
+        return this.baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 根据id查询菜品选项
+     * @param id
+     * @return
+     */
+    public List<DishItemVO> getDishItemById(Long id) {
+        return this.baseMapper.getDishItemBySetmealId(id);
+    }
+
+
 }

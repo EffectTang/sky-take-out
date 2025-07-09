@@ -141,6 +141,17 @@ public class CategoryServiceImpl  extends ServiceImpl<CategoryMapper, Category> 
      */
     public List<Category> list(Integer type) {
         //return categoryMapper.list(type);
-        return this.list();
+        //select * from category
+        //where status = 1
+        //        <if test="type != null">
+        //        and type = #{type}
+        //</if>
+        //order by sort asc,create_time desc
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(type != null, "type", type)
+                .eq("status", StatusConstant.ENABLE)
+                .orderByAsc("sort")
+                .orderByDesc("create_time");
+        return this.list(queryWrapper);
     }
 }

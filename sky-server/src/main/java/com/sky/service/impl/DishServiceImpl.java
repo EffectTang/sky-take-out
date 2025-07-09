@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -186,5 +187,38 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         QueryWrapper<Dish> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("category_id", id).eq("status", StatusConstant.ENABLE);
         return this.list(queryWrapper);
+    }
+
+    /**
+     * 条件查询菜品和口味
+     * @param dish
+     * @return
+     */
+    public List<DishVO> listWithFlavor(Dish dish) {
+        //会根据 dish 对象中不为 null 的属性，默认生成等值匹配（eq）的查询条
+        QueryWrapper<Dish> dishQueryWrapper = new QueryWrapper<>();
+        dishQueryWrapper.eq(dish.getCategoryId() != null, "category_id", dish.getCategoryId())
+                .eq(dish.getStatus() != null, "status", dish.getStatus())
+                .like(dish.getName() != null, "name", dish.getName())
+                .orderByDesc("create_time");
+        List<Dish> dishList = this.list(dishQueryWrapper);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+
+            //根据菜品id查询对应的口味
+            //List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
+            QueryWrapper<DishFlavor> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("dish_id",d.getId());
+            List<DishFlavor> flavors = dishFlavorMapper.selectList(queryWrapper);
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
     }
 }
