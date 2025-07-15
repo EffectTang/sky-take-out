@@ -122,4 +122,12 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
             }
         }
     }
+
+    @Override
+    public void removeAll() {
+        Long userId = BaseContext.getCurrentId();
+        QueryWrapper<ShoppingCart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        this.remove(queryWrapper);
+    }
 }
