@@ -94,4 +94,32 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
         List<ShoppingCart> shoppingCartList = this.list(queryWrapper);
         return shoppingCartList;
     }
+
+    @Override
+    public void remove(ShoppingCartDTO shoppingCartDTO) {
+        if(shoppingCartDTO.getDishId()!=null){
+            QueryWrapper<ShoppingCart> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("dish_id", shoppingCartDTO.getDishId())
+                    .eq("user_id", BaseContext.getCurrentId())
+                    .eq("dish_flavor", shoppingCartDTO.getDishFlavor());
+            ShoppingCart shoppingCart = this.getBaseMapper().selectOne(queryWrapper);
+            if(shoppingCart.getNumber()==1){
+                this.remove(queryWrapper);
+            }else {
+                shoppingCart.setNumber(shoppingCart.getNumber()-1);
+                this.updateById(shoppingCart);
+            }
+        }else {
+            QueryWrapper<ShoppingCart> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("setmeal_id", shoppingCartDTO.getSetmealId())
+                    .eq("user_id", BaseContext.getCurrentId());
+            ShoppingCart shoppingCart = this.getBaseMapper().selectOne(queryWrapper);
+            if(shoppingCart.getNumber()==1){
+                this.remove(queryWrapper);
+            }else {
+                shoppingCart.setNumber(shoppingCart.getNumber()-1);
+                this.updateById(shoppingCart);
+            }
+        }
+    }
 }
