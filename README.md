@@ -2,12 +2,13 @@
 
 ## 技术选型
 
+- Java 8
 - SpringBoot 2.7.3
 - mybatis-plus 3.5.11
 - mysql 8.0.3
 - swagger 
 - MinIO 8.5.17
-- Redis 
+- Redis 6.2.6
 
 ### 相关技术资料
 

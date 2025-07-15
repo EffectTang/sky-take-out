@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.RedisKeyConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.DishDTO;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Transactional
     @Override
@@ -171,7 +176,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     @Override
-    public void startOrStop(Integer status, Long id) {
+    public Long startOrStop(Integer status, Long id) {
 
         Dish dish = this.getById(id);
 
@@ -180,6 +185,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         dish.setUpdateUser(BaseContext.getCurrentId());
         this.updateById(dish);
 
+        return dish.getCategoryId();
     }
 
     @Override
@@ -218,6 +224,13 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             dishVO.setFlavors(flavors);
             dishVOList.add(dishVO);
         }
+
+        return dishVOList;
+    }
+
+    @Override
+    public List<DishVO> listByCache(Long categoryId) {
+        List<DishVO> dishVOList = (List<DishVO>) redisTemplate.opsForValue().get(RedisKeyConstant.DISH_CACHE_KEY_PRE + categoryId);
 
         return dishVOList;
     }

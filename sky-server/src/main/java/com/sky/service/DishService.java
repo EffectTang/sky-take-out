@@ -31,7 +31,7 @@ public interface DishService {
 
     void updateWithFlavor(DishDTO dishDTO);
 
-    void startOrStop(Integer status, Long id);
+    Long startOrStop(Integer status, Long id);
 
     List<Dish> listByCategoryId(Long id);
 
@@ -41,4 +41,6 @@ public interface DishService {
      * @return
      */
     List<DishVO> listWithFlavor(Dish dish);
+
+    List<DishVO> listByCache(Long categoryId);
 }
