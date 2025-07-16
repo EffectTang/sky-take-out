@@ -10,6 +10,7 @@ package com.sky.controller.user;/**
  * @create 2025/7/15
  */
 
+import com.sky.context.BaseContext;
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.ShoppingCart;
 import com.sky.result.Result;
@@ -68,7 +69,8 @@ public class ShoppingCartController {
     @ApiOperation("清空购物车")
     public Result<String> clean(){
         log.info("清空购物车...");
-        shoppingCartService.removeAll();//后绪步骤实现
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartService.removeAllByUserId(userId);//后绪步骤实现
         return Result.success();
     }
 

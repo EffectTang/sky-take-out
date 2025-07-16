@@ -18,5 +18,5 @@ public interface ShoppingCartService {
 
     void remove(ShoppingCartDTO shoppingCartDTO);
 
-    void removeAll();
+    void removeAllByUserId(Long usreId);
 }
